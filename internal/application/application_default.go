@@ -70,8 +70,8 @@ func (a *ServerChi) Run() (err error) {
 	rt.Use(middleware.Recoverer)
 	// - endpoints
 	rt.Route("/vehicles", func(rt chi.Router) {
-		// - GET /vehicles
 		rt.Get("/", hd.GetAll())
+		rt.Post("/", hd.PostCreate())
 	})
 
 	// run server

@@ -1,6 +1,9 @@
 package repository
 
-import "app/internal"
+import (
+	"app/internal"
+	"fmt"
+)
 
 // NewVehicleMap is a function that returns a new instance of VehicleMap
 func NewVehicleMap(db map[int]internal.Vehicle) *VehicleMap {
@@ -28,4 +31,12 @@ func (r *VehicleMap) FindAll() (v map[int]internal.Vehicle, err error) {
 	}
 
 	return
+}
+
+func (r *VehicleMap) Create(v internal.Vehicle) error {
+	if _, exists := r.db[v.Id]; exists {
+		return fmt.Errorf("vehicle with ID: %v, already exists", v.Id)
+	}
+	r.db[v.Id] = v
+	return nil
 }

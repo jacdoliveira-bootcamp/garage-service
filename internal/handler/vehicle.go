@@ -2,12 +2,13 @@ package handler
 
 import (
 	"app/internal"
+	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/bootcamp-go/web/response"
 )
 
-// VehicleJSON is a struct that represents a vehicle in JSON format
 type VehicleJSON struct {
 	ID              int     `json:"id"`
 	Brand           string  `json:"brand"`
@@ -25,25 +26,16 @@ type VehicleJSON struct {
 	Width           float64 `json:"width"`
 }
 
-// NewVehicleDefault is a function that returns a new instance of VehicleDefault
 func NewVehicleDefault(sv internal.VehicleService) *VehicleDefault {
 	return &VehicleDefault{sv: sv}
 }
 
-// VehicleDefault is a struct with methods that represent handlers for vehicles
 type VehicleDefault struct {
-	// sv is the service that will be used by the handler
 	sv internal.VehicleService
 }
 
-// GetAll is a method that returns a handler for the route GET /vehicles
 func (h *VehicleDefault) GetAll() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// request
-		// ...
-
-		// process
-		// - get all vehicles
 		v, err := h.sv.FindAll()
 		if err != nil {
 			response.JSON(w, http.StatusInternalServerError, nil)
@@ -73,6 +65,54 @@ func (h *VehicleDefault) GetAll() http.HandlerFunc {
 		response.JSON(w, http.StatusOK, map[string]any{
 			"message": "success",
 			"data":    data,
+		})
+	}
+}
+
+func (h *VehicleDefault) PostCreate() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req VehicleJSON
+
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]string{"error": "invalid JSON"})
+			return
+		}
+		v := internal.Vehicle{
+			Id: req.ID,
+			VehicleAttributes: internal.VehicleAttributes{
+				Brand:           req.Brand,
+				Model:           req.Model,
+				Registration:    req.Registration,
+				Color:           req.Color,
+				FabricationYear: req.FabricationYear,
+				Capacity:        req.Capacity,
+				MaxSpeed:        req.MaxSpeed,
+				FuelType:        req.FuelType,
+				Transmission:    req.Transmission,
+				Weight:          req.Weight,
+				Dimensions: internal.Dimensions{
+					Height: req.Height,
+					Length: req.Length,
+					Width:  req.Width,
+				},
+			},
+		}
+
+		err := h.sv.Create(v)
+		if err != nil {
+			if strings.Contains(err.Error(), "already exists") {
+				response.JSON(w, http.StatusConflict, map[string]string{
+					"error": err.Error(),
+				})
+				return
+			}
+			response.JSON(w, http.StatusBadRequest, map[string]string{
+				"error": err.Error(),
+			})
+			return
+		}
+		response.JSON(w, http.StatusCreated, map[string]string{
+			"message": "vehicle created",
 		})
 	}
 }
