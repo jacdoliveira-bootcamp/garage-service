@@ -100,7 +100,7 @@ func (h *VehicleDefault) PostCreate() http.HandlerFunc {
 
 		err := h.sv.Create(v)
 		if err != nil {
-			if strings.Contains(err.Error(), "already exists") {
+			if strings.Contains(err.Error(), "identifier of the existing vehicle") {
 				response.JSON(w, http.StatusConflict, map[string]string{
 					"error": err.Error(),
 				})
@@ -112,7 +112,7 @@ func (h *VehicleDefault) PostCreate() http.HandlerFunc {
 			return
 		}
 		response.JSON(w, http.StatusCreated, map[string]string{
-			"message": "vehicle created",
+			"message": "vehicle created successfully",
 		})
 	}
 }
