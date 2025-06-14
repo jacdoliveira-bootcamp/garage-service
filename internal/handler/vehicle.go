@@ -4,9 +4,11 @@ import (
 	"app/internal"
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/bootcamp-go/web/response"
+	"github.com/go-chi/chi/v5"
 )
 
 type VehicleJSON struct {
@@ -113,6 +115,49 @@ func (h *VehicleDefault) PostCreate() http.HandlerFunc {
 		}
 		response.JSON(w, http.StatusCreated, map[string]string{
 			"message": "vehicle created successfully",
+		})
+	}
+}
+
+func (h *VehicleDefault) GetByColorAndYear() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		color := chi.URLParam(r, "color")
+		yearStr := chi.URLParam(r, "year")
+
+		year, err := strconv.Atoi(yearStr)
+		if err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]string{"error": "invalid formated year"})
+			return
+		}
+
+		vehicles, err := h.sv.FindByColorAndYear(color, year)
+		if err != nil {
+			response.JSON(w, http.StatusNotFound, map[string]string{"error": "vehicle not found"})
+		}
+
+		var data []VehicleJSON
+		for _, value := range vehicles {
+			data = append(data, VehicleJSON{
+				ID:              value.Id,
+				Brand:           value.Brand,
+				Model:           value.Model,
+				Registration:    value.Registration,
+				Color:           value.Color,
+				FabricationYear: value.FabricationYear,
+				Capacity:        value.Capacity,
+				MaxSpeed:        value.MaxSpeed,
+				FuelType:        value.FuelType,
+				Transmission:    value.Transmission,
+				Weight:          value.Weight,
+				Height:          value.Height,
+				Length:          value.Length,
+				Width:           value.Width,
+			})
+		}
+
+		response.JSON(w, http.StatusOK, map[string]any{
+			"message": "success",
+			"data":    data,
 		})
 	}
 }

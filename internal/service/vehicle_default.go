@@ -28,3 +28,20 @@ func (s *VehicleDefault) Create(v internal.Vehicle) error {
 	}
 	return s.rp.Create(v)
 }
+
+func (s *VehicleDefault) FindByColorAndYear(color string, year int) ([]internal.Vehicle, error) {
+	all, err := s.rp.FindAll()
+	if err != nil {
+		return nil, err
+	}
+	var result []internal.Vehicle
+	for _, v := range all {
+		if v.Color == color && v.FabricationYear == year {
+			result = append(result, v)
+		}
+	}
+	if len(result) == 0 {
+		return nil, fmt.Errorf("vehicle not found")
+	}
+	return result, nil
+}
