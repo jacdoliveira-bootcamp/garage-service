@@ -23,9 +23,6 @@ func (s *VehicleDefault) FindAll() (v map[int]internal.Vehicle, err error) {
 }
 
 func (s *VehicleDefault) Create(v internal.Vehicle) error {
-	if v.Id == 0 || v.Brand == "" || v.Model == "" {
-		return fmt.Errorf("invalid vehicle data")
-	}
 	return s.rp.Create(v)
 }
 
@@ -44,4 +41,9 @@ func (s *VehicleDefault) FindByColorAndYear(color string, year int) ([]internal.
 		return nil, fmt.Errorf("vehicle not found")
 	}
 	return result, nil
+}
+
+func (s *VehicleDefault) Delete(id int) error {
+
+	return s.rp.Delete(id)
 }

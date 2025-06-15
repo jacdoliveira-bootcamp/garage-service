@@ -161,3 +161,25 @@ func (h *VehicleDefault) GetByColorAndYear() http.HandlerFunc {
 		})
 	}
 }
+
+func (h *VehicleDefault) DeleteById() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		idStr := chi.URLParam(r, "id")
+
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]any{
+				"error": "invalid ID",
+			})
+			return
+		}
+		err = h.sv.Delete(id)
+		if err != nil {
+			response.JSON(w, http.StatusNotFound, map[string]any{
+				"error": err.Error(),
+			})
+			return
+		}
+		w.WriteHeader(http.StatusNoContent)
+	}
+}

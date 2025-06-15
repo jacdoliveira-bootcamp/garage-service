@@ -72,7 +72,8 @@ func (a *ServerChi) Run() (err error) {
 	rt.Route("/vehicles", func(rt chi.Router) {
 		rt.Get("/", hd.GetAll())
 		rt.Post("/", hd.PostCreate())
-		rt.Get("/color/{color}/year/{year}", (hd.GetByColorAndYear()))
+		rt.Get("/color/{color}/year/{year}", hd.GetByColorAndYear())
+		rt.Delete("/{id}", hd.DeleteById())
 	})
 
 	// run server

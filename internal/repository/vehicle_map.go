@@ -40,3 +40,11 @@ func (r *VehicleMap) Create(v internal.Vehicle) error {
 	r.db[v.Id] = v
 	return nil
 }
+
+func (r *VehicleMap) Delete(id int) error {
+	if _, exists := r.db[id]; !exists {
+		return fmt.Errorf("vehicle with ID: %v, not found", id)
+	}
+	delete(r.db, id)
+	return nil
+}
