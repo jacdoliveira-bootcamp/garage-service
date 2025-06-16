@@ -71,3 +71,17 @@ func (r *VehicleMap) UpdateFuelType(id int, fuelType string) error {
 
 	return nil
 }
+
+func (r *VehicleMap) FindByFuelType(fuelType string) ([]internal.Vehicle, error) {
+	var result []internal.Vehicle
+	for _, v := range r.db {
+		if v.FuelType == fuelType {
+			result = append(result, v)
+		}
+	}
+	if len(result) == 0 {
+		return nil, fmt.Errorf("vehicle not found")
+	}
+
+	return result, nil
+}

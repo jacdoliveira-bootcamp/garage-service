@@ -57,3 +57,8 @@ func (s *VehicleDefault) UpdateFuelType(id int, fuelType string) error {
 
 	return s.rp.UpdateFuelType(id, fuelType)
 }
+
+func (s *VehicleDefault) FindByFuelType(fuelType string) ([]internal.Vehicle, error) {
+
+	return s.rp.FindByFuelType(fuelType)
+}
