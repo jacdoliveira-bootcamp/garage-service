@@ -6,4 +6,5 @@ type VehicleService interface {
 	FindByColorAndYear(color string, year int) ([]Vehicle, error)
 	Delete(id int) error
 	UpdateSpeed(id int, speed float64) error
+	UpdateFuelType(id int, fuelType string) error
 }

@@ -59,3 +59,15 @@ func (r *VehicleMap) UpdateSpeed(id int, speed float64) error {
 	r.db[id] = v
 	return nil
 }
+
+func (r *VehicleMap) UpdateFuelType(id int, fuelType string) error {
+	v, exists := r.db[id]
+	if !exists {
+		return fmt.Errorf("vehicle with ID: %v, does not found", id)
+	}
+
+	v.FuelType = fuelType
+	r.db[id] = v
+
+	return nil
+}

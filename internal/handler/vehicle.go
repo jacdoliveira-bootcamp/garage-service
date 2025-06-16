@@ -220,3 +220,38 @@ func (h *VehicleDefault) PutUpdateSpeed() http.HandlerFunc {
 
 	}
 }
+
+func (h *VehicleDefault) UpdateFuelType() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		idStr := chi.URLParam(r, "id")
+
+		id, err := strconv.Atoi(idStr)
+
+		if err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]any{
+				"error": "invalid ID",
+			})
+			return
+		}
+
+		var body struct {
+			FuelType string `json:"fuel_type"`
+		}
+
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]string{"error": "invalid JSON"})
+			return
+		}
+
+		err = h.sv.UpdateFuelType(id, body.FuelType)
+		if err != nil {
+			response.JSON(w, http.StatusNotFound, map[string]string{
+				"error": err.Error(),
+			})
+			return
+		}
+		response.JSON(w, http.StatusOK, map[string]string{
+			"message": "sucess update fueltype",
+		})
+	}
+}

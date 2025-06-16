@@ -52,3 +52,8 @@ func (s *VehicleDefault) UpdateSpeed(id int, speed float64) error {
 
 	return s.rp.UpdateSpeed(id, speed)
 }
+
+func (s *VehicleDefault) UpdateFuelType(id int, fuelType string) error {
+
+	return s.rp.UpdateFuelType(id, fuelType)
+}
