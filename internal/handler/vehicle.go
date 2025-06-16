@@ -183,3 +183,40 @@ func (h *VehicleDefault) DeleteById() http.HandlerFunc {
 		w.WriteHeader(http.StatusNoContent)
 	}
 }
+
+func (h *VehicleDefault) PutUpdateSpeed() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		idStr := chi.URLParam(r, "id")
+
+		id, err := strconv.Atoi(idStr)
+
+		if err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]any{
+				"error": "invalid ID",
+			})
+			return
+		}
+
+		var body struct {
+			MaxSpeed float64 `json:"max_speed"`
+		}
+
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]string{"error": "invalid JSON"})
+			return
+		}
+
+		err = h.sv.UpdateSpeed(id, body.MaxSpeed)
+		if err != nil {
+			response.JSON(w, http.StatusNotFound, map[string]string{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		response.JSON(w, http.StatusOK, map[string]any{
+			"message": "max speed update sucessfully",
+		})
+
+	}
+}

@@ -48,3 +48,14 @@ func (r *VehicleMap) Delete(id int) error {
 	delete(r.db, id)
 	return nil
 }
+
+func (r *VehicleMap) UpdateSpeed(id int, speed float64) error {
+	v, exists := r.db[id]
+	if !exists {
+		return fmt.Errorf("vehicle with ID: %v, does not found", id)
+	}
+
+	v.MaxSpeed = speed
+	r.db[id] = v
+	return nil
+}

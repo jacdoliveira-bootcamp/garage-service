@@ -47,3 +47,8 @@ func (s *VehicleDefault) Delete(id int) error {
 
 	return s.rp.Delete(id)
 }
+
+func (s *VehicleDefault) UpdateSpeed(id int, speed float64) error {
+
+	return s.rp.UpdateSpeed(id, speed)
+}
