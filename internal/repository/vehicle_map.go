@@ -85,3 +85,17 @@ func (r *VehicleMap) FindByFuelType(fuelType string) ([]internal.Vehicle, error)
 
 	return result, nil
 }
+
+func (r *VehicleMap) FindByTransmissionType(transmission string) ([]internal.Vehicle, error) {
+	var result []internal.Vehicle
+	for _, v := range r.db {
+		if v.Transmission == transmission {
+			result = append(result, v)
+		}
+	}
+	if len(result) == 0 {
+		return nil, fmt.Errorf("vehicle not found")
+	}
+
+	return result, nil
+}

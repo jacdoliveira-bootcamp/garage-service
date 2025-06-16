@@ -292,3 +292,40 @@ func (h *VehicleDefault) GetByFuelType() http.HandlerFunc {
 		})
 	}
 }
+
+func (h *VehicleDefault) GetByTransmissionType() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		transmission := chi.URLParam(r, "type")
+
+		vehicles, err := h.sv.FindByTransmissionType(transmission)
+		if err != nil {
+			response.JSON(w, http.StatusNotFound, map[string]string{"error": "vehicle not found"})
+			return
+		}
+
+		var data []VehicleJSON
+		for _, value := range vehicles {
+			data = append(data, VehicleJSON{
+				ID:              value.Id,
+				Brand:           value.Brand,
+				Model:           value.Model,
+				Registration:    value.Registration,
+				Color:           value.Color,
+				FabricationYear: value.FabricationYear,
+				Capacity:        value.Capacity,
+				MaxSpeed:        value.MaxSpeed,
+				FuelType:        value.FuelType,
+				Transmission:    value.Transmission,
+				Weight:          value.Weight,
+				Height:          value.Height,
+				Length:          value.Length,
+				Width:           value.Width,
+			})
+		}
+
+		response.JSON(w, http.StatusOK, map[string]any{
+			"message": "success",
+			"data":    data,
+		})
+	}
+}

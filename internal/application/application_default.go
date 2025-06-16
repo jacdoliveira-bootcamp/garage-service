@@ -77,6 +77,7 @@ func (a *ServerChi) Run() (err error) {
 		rt.Put("/{id}/update_speed", hd.PutUpdateSpeed())
 		rt.Put("/{id}/update_fuel", hd.UpdateFuelType())
 		rt.Get("/fuel_type/{type}", hd.GetByFuelType())
+		rt.Get("/transmission/{type}", hd.GetByTransmissionType())
 	})
 
 	// run server

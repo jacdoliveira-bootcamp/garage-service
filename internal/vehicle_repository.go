@@ -7,4 +7,5 @@ type VehicleRepository interface {
 	UpdateSpeed(id int, speed float64) error
 	UpdateFuelType(id int, fuelType string) error
 	FindByFuelType(fuelType string) ([]Vehicle, error)
+	FindByTransmissionType(transmission string) ([]Vehicle, error)
 }

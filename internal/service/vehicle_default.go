@@ -62,3 +62,8 @@ func (s *VehicleDefault) FindByFuelType(fuelType string) ([]internal.Vehicle, er
 
 	return s.rp.FindByFuelType(fuelType)
 }
+
+func (s *VehicleDefault) FindByTransmissionType(transmission string) ([]internal.Vehicle, error) {
+
+	return s.rp.FindByTransmissionType(transmission)
+}
