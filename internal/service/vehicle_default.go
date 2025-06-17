@@ -59,3 +59,9 @@ func (s *VehicleDefault) CreateBatch(vehicles []internal.Vehicle) error {
 
 	return s.rp.CreateBatch(vehicles)
 }
+
+func (s *VehicleDefault) FindByBrandAndBetweenYear(brand string, start, end int) ([]internal.Vehicle, error) {
+
+	return s.rp.FindByBrandAndBetweenYear(brand, start, end)
+
+}

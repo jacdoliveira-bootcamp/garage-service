@@ -126,3 +126,17 @@ func (r *VehicleMap) CreateBatch(vehicles []internal.Vehicle) error {
 	}
 	return nil
 }
+
+func (r *VehicleMap) FindByBrandAndBetweenYear(brand string, start, end int) ([]internal.Vehicle, error) {
+	var result []internal.Vehicle
+
+	for _, v := range r.db {
+		if v.Brand == brand && v.FabricationYear >= start && v.FabricationYear <= end {
+			result = append(result, v)
+		}
+	}
+	if len(result) == 0 {
+		return nil, fmt.Errorf("vehilce not found")
+	}
+	return result, nil
+}

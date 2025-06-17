@@ -382,3 +382,59 @@ func (h *VehicleDefault) PostCreateBatch() http.HandlerFunc {
 	}
 
 }
+
+func (h *VehicleDefault) GetByBrandAndBetweenYear() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		brand := chi.URLParam(r, "brand")
+		startStr := chi.URLParam(r, "start_year")
+		endStr := chi.URLParam(r, "end_year")
+
+		start, err := strconv.Atoi(startStr)
+		if err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]string{
+				"error": "invalid start year",
+			})
+		}
+
+		end, err := strconv.Atoi(endStr)
+		if err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]string{
+				"error": "invalid end year",
+			})
+		}
+
+		vehicles, err := h.sv.FindByBrandAndBetweenYear(brand, start, end)
+		if err != nil {
+			response.JSON(w, http.StatusNotFound, map[string]string{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		var data []VehicleJSON
+		for _, v := range vehicles {
+			data = append(data, VehicleJSON{
+				ID:              v.Id,
+				Brand:           v.Brand,
+				Model:           v.Model,
+				Registration:    v.Registration,
+				Color:           v.Color,
+				FabricationYear: v.FabricationYear,
+				Capacity:        v.Capacity,
+				MaxSpeed:        v.MaxSpeed,
+				FuelType:        v.FuelType,
+				Transmission:    v.Transmission,
+				Weight:          v.Weight,
+				Height:          v.Dimensions.Height,
+				Length:          v.Dimensions.Length,
+				Width:           v.Dimensions.Width,
+			})
+		}
+
+		response.JSON(w, http.StatusOK, map[string]any{
+			"message": "sucess",
+			"data":    data,
+		})
+
+	}
+}

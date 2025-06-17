@@ -10,4 +10,5 @@ type VehicleRepository interface {
 	FindByFuelType(fuelType string) ([]Vehicle, error)
 	FindByTransmissionType(transmission string) ([]Vehicle, error)
 	CreateBatch([]Vehicle) error
+	FindByBrandAndBetweenYear(brand string, start, end int) ([]Vehicle, error)
 }

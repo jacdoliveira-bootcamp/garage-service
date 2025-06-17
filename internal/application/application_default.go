@@ -79,6 +79,7 @@ func (a *ServerChi) Run() (err error) {
 		rt.Get("/fuel_type/{type}", hd.GetByFuelType())
 		rt.Get("/transmission/{type}", hd.GetByTransmissionType())
 		rt.Post("/batch", hd.PostCreateBatch())
+		rt.Get("/brand/{brand}/between/{start_year}/{end_year}", hd.GetByBrandAndBetweenYear())
 	})
 
 	// run server
