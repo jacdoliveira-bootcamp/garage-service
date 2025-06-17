@@ -80,6 +80,7 @@ func (a *ServerChi) Run() (err error) {
 		rt.Get("/transmission/{type}", hd.GetByTransmissionType())
 		rt.Post("/batch", hd.PostCreateBatch())
 		rt.Get("/brand/{brand}/between/{start_year}/{end_year}", hd.GetByBrandAndBetweenYear())
+		rt.Get("/id/{id}", hd.GetById())
 	})
 
 	// run server

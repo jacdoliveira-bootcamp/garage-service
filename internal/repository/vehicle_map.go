@@ -140,3 +140,17 @@ func (r *VehicleMap) FindByBrandAndBetweenYear(brand string, start, end int) ([]
 	}
 	return result, nil
 }
+
+func (r *VehicleMap) FindById(id int) ([]internal.Vehicle, error) {
+	var result []internal.Vehicle
+
+	for _, v := range r.db {
+		if v.Id == id {
+			result = append(result, v)
+		}
+	}
+	if len(result) == 0 {
+		return nil, fmt.Errorf("vehicle not found")
+	}
+	return result, nil
+}

@@ -65,3 +65,9 @@ func (s *VehicleDefault) FindByBrandAndBetweenYear(brand string, start, end int)
 	return s.rp.FindByBrandAndBetweenYear(brand, start, end)
 
 }
+
+func (s *VehicleDefault) FindById(id int) ([]internal.Vehicle, error) {
+
+	return s.rp.FindById(id)
+
+}

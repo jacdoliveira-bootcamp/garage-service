@@ -438,3 +438,47 @@ func (h *VehicleDefault) GetByBrandAndBetweenYear() http.HandlerFunc {
 
 	}
 }
+
+func (h *VehicleDefault) GetById() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		idStr := chi.URLParam(r, "id")
+
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]string{
+				"error": "invalid ID",
+			})
+		}
+		vehicles, err := h.sv.FindById(id)
+		if err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]string{
+				"error": err.Error(),
+			})
+			return
+		}
+		var data []VehicleJSON
+		for _, v := range vehicles {
+			data = append(data, VehicleJSON{
+				ID:              v.Id,
+				Brand:           v.Brand,
+				Model:           v.Model,
+				Registration:    v.Registration,
+				Color:           v.Color,
+				FabricationYear: v.FabricationYear,
+				Capacity:        v.Capacity,
+				MaxSpeed:        v.MaxSpeed,
+				FuelType:        v.FuelType,
+				Transmission:    v.Transmission,
+				Weight:          v.Weight,
+				Height:          v.Dimensions.Height,
+				Length:          v.Dimensions.Length,
+				Width:           v.Dimensions.Width,
+			})
+		}
+		response.JSON(w, http.StatusOK, map[string]any{
+			"message": "sucess",
+			"data":    data,
+		})
+
+	}
+}
