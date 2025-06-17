@@ -170,3 +170,19 @@ func (r *VehicleMap) FindByBrandAverageSpeed(brand string) (float64, error) {
 	}
 	return total / float64(count), nil
 }
+
+func (r *VehicleMap) FindByBrandAverageCapacity(brand string) (int, error) {
+	var total int
+	var count int
+
+	for _, v := range r.db {
+		if v.Brand == brand {
+			total += int(v.Capacity)
+			count++
+		}
+	}
+	if count == 0 {
+		return 0, fmt.Errorf("brand not found")
+	}
+	return total / int(count), nil
+}

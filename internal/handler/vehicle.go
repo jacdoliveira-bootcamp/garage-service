@@ -500,3 +500,21 @@ func (h *VehicleDefault) GetByBrandAverageSpeed() http.HandlerFunc {
 		})
 	}
 }
+
+func (h *VehicleDefault) GetByBrandAverageCapacity() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		brand := chi.URLParam(r, "brand")
+
+		avg, err := h.sv.FindByBrandAverageCapacity(brand)
+		if err != nil {
+			response.JSON(w, http.StatusNotFound, map[string]string{
+				"error": err.Error(),
+			})
+			return
+		}
+		response.JSON(w, http.StatusOK, map[string]any{
+			"message":              "sucess",
+			"avarage_max_capacity": avg,
+		})
+	}
+}

@@ -82,6 +82,8 @@ func (a *ServerChi) Run() (err error) {
 		rt.Get("/brand/{brand}/between/{start_year}/{end_year}", hd.GetByBrandAndBetweenYear())
 		rt.Get("/id/{id}", hd.GetById())
 		rt.Get("/avarage_speed/brand/{brand}", hd.GetByBrandAverageSpeed())
+		rt.Get("/avarage_capacity/brand/{brand}", hd.GetByBrandAverageCapacity())
+
 	})
 
 	// run server

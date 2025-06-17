@@ -13,4 +13,5 @@ type VehicleService interface {
 	FindByBrandAndBetweenYear(brand string, start, end int) ([]Vehicle, error)
 	FindById(id int) ([]Vehicle, error)
 	FindByBrandAverageSpeed(brand string) (float64, error)
+	FindByBrandAverageCapacity(brand string) (int, error)
 }
