@@ -12,4 +12,5 @@ type VehicleRepository interface {
 	CreateBatch([]Vehicle) error
 	FindByBrandAndBetweenYear(brand string, start, end int) ([]Vehicle, error)
 	FindById(id int) ([]Vehicle, error)
+	FindByBrandAverageSpeed(brand string) (float64, error)
 }

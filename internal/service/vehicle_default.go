@@ -71,3 +71,7 @@ func (s *VehicleDefault) FindById(id int) ([]internal.Vehicle, error) {
 	return s.rp.FindById(id)
 
 }
+
+func (s *VehicleDefault) FindByBrandAverageSpeed(brand string) (float64, error) {
+	return s.rp.FindByBrandAverageSpeed(brand)
+}
