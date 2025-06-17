@@ -79,3 +79,11 @@ func (s *VehicleDefault) FindByBrandAverageSpeed(brand string) (float64, error) 
 func (s *VehicleDefault) FindByBrandAverageCapacity(brand string) (int, error) {
 	return s.rp.FindByBrandAverageCapacity(brand)
 }
+
+func (s *VehicleDefault) FindByDimensions(lengthMin, lengthMax, widthMin, widthMax float64) ([]internal.Vehicle, error) {
+	return s.rp.FindByDimensions(lengthMin, lengthMax, widthMin, widthMax)
+}
+
+func (s *VehicleDefault) FindByWeight(min, max float64) ([]internal.Vehicle, error) {
+	return s.rp.FindByWeight(min, max)
+}

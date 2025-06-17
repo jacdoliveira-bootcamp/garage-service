@@ -14,4 +14,6 @@ type VehicleService interface {
 	FindById(id int) ([]Vehicle, error)
 	FindByBrandAverageSpeed(brand string) (float64, error)
 	FindByBrandAverageCapacity(brand string) (int, error)
+	FindByDimensions(lengthMin, lengthMax, widthMin, widthMax float64) ([]Vehicle, error)
+	FindByWeight(min, max float64) ([]Vehicle, error)
 }

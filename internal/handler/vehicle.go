@@ -518,3 +518,87 @@ func (h *VehicleDefault) GetByBrandAverageCapacity() http.HandlerFunc {
 		})
 	}
 }
+
+func (h *VehicleDefault) GetByDimensions() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// length=10-200
+		length := strings.Split(r.URL.Query().Get("length"), "-")
+		width := strings.Split(r.URL.Query().Get("width"), "-")
+
+		if len(length) != 2 || len(width) != 2 {
+			response.JSON(w, http.StatusBadRequest, map[string]string{"error": "invalid format"})
+			return
+		}
+
+		lengthMin, _ := strconv.ParseFloat(length[0], 64)
+		lengthMax, _ := strconv.ParseFloat(length[1], 64)
+		widthMin, _ := strconv.ParseFloat(width[0], 64)
+		widthMax, _ := strconv.ParseFloat(width[1], 64)
+
+		vehicles, err := h.sv.FindByDimensions(lengthMin, lengthMax, widthMin, widthMax)
+		if err != nil {
+			response.JSON(w, http.StatusNotFound, map[string]string{"error": err.Error()})
+			return
+		}
+
+		var data []VehicleJSON
+		for _, v := range vehicles {
+			data = append(data, VehicleJSON{
+				ID:              v.Id,
+				Brand:           v.Brand,
+				Model:           v.Model,
+				Registration:    v.Registration,
+				Color:           v.Color,
+				FabricationYear: v.FabricationYear,
+				Capacity:        v.Capacity,
+				MaxSpeed:        v.MaxSpeed,
+				FuelType:        v.FuelType,
+				Transmission:    v.Transmission,
+				Weight:          v.Weight,
+				Height:          v.Height,
+				Length:          v.Length,
+				Width:           v.Width,
+			})
+		}
+
+		response.JSON(w, http.StatusOK, map[string]any{"message": "success", "data": data})
+	}
+}
+
+func (h *VehicleDefault) GetByWeightRange() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		minStr := r.URL.Query().Get("min")
+		maxStr := r.URL.Query().Get("max")
+
+		min, _ := strconv.ParseFloat(minStr, 64)
+		max, _ := strconv.ParseFloat(maxStr, 64)
+
+		vehicles, err := h.sv.FindByWeight(min, max)
+		if err != nil {
+			response.JSON(w, http.StatusNotFound, map[string]string{"error": err.Error()})
+			return
+		}
+
+		var data []VehicleJSON
+		for _, v := range vehicles {
+			data = append(data, VehicleJSON{
+				ID:              v.Id,
+				Brand:           v.Brand,
+				Model:           v.Model,
+				Registration:    v.Registration,
+				Color:           v.Color,
+				FabricationYear: v.FabricationYear,
+				Capacity:        v.Capacity,
+				MaxSpeed:        v.MaxSpeed,
+				FuelType:        v.FuelType,
+				Transmission:    v.Transmission,
+				Weight:          v.Weight,
+				Height:          v.Height,
+				Length:          v.Length,
+				Width:           v.Width,
+			})
+		}
+
+		response.JSON(w, http.StatusOK, map[string]any{"message": "success", "data": data})
+	}
+}

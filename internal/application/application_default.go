@@ -83,6 +83,8 @@ func (a *ServerChi) Run() (err error) {
 		rt.Get("/id/{id}", hd.GetById())
 		rt.Get("/avarage_speed/brand/{brand}", hd.GetByBrandAverageSpeed())
 		rt.Get("/avarage_capacity/brand/{brand}", hd.GetByBrandAverageCapacity())
+		rt.Get("/dimensions", hd.GetByDimensions())
+		rt.Get("/weight", hd.GetByWeightRange())
 
 	})
 

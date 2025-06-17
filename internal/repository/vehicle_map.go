@@ -186,3 +186,30 @@ func (r *VehicleMap) FindByBrandAverageCapacity(brand string) (int, error) {
 	}
 	return total / int(count), nil
 }
+
+func (r *VehicleMap) FindByDimensions(lengthMin, lengthMax, widthMin, widthMax float64) ([]internal.Vehicle, error) {
+	var result []internal.Vehicle
+	for _, v := range r.db {
+		if v.Length >= lengthMin && v.Length <= lengthMax &&
+			v.Width >= widthMin && v.Width <= widthMax {
+			result = append(result, v)
+		}
+	}
+	if len(result) == 0 {
+		return nil, fmt.Errorf("no vehicles found")
+	}
+	return result, nil
+}
+
+func (r *VehicleMap) FindByWeight(min, max float64) ([]internal.Vehicle, error) {
+	var result []internal.Vehicle
+	for _, v := range r.db {
+		if v.Weight >= min && v.Weight <= max {
+			result = append(result, v)
+		}
+	}
+	if len(result) == 0 {
+		return nil, fmt.Errorf("no vehicles found")
+	}
+	return result, nil
+}
