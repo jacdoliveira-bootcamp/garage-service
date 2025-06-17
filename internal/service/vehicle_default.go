@@ -2,7 +2,6 @@ package service
 
 import (
 	"app/internal"
-	"fmt"
 )
 
 // NewVehicleDefault is a function that returns a new instance of VehicleDefault
@@ -27,20 +26,8 @@ func (s *VehicleDefault) Create(v internal.Vehicle) error {
 }
 
 func (s *VehicleDefault) FindByColorAndYear(color string, year int) ([]internal.Vehicle, error) {
-	all, err := s.rp.FindAll()
-	if err != nil {
-		return nil, err
-	}
-	var result []internal.Vehicle
-	for _, v := range all {
-		if v.Color == color && v.FabricationYear == year {
-			result = append(result, v)
-		}
-	}
-	if len(result) == 0 {
-		return nil, fmt.Errorf("vehicle not found")
-	}
-	return result, nil
+
+	return s.rp.FindByColorAndYear(color, year)
 }
 
 func (s *VehicleDefault) Delete(id int) error {
