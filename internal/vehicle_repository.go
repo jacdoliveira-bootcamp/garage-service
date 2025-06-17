@@ -9,4 +9,5 @@ type VehicleRepository interface {
 	UpdateFuelType(id int, fuelType string) error
 	FindByFuelType(fuelType string) ([]Vehicle, error)
 	FindByTransmissionType(transmission string) ([]Vehicle, error)
+	CreateBatch([]Vehicle) error
 }

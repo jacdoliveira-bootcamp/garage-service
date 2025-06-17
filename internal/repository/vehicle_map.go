@@ -114,3 +114,15 @@ func (r *VehicleMap) FindByColorAndYear(color string, year int) ([]internal.Vehi
 
 	return result, nil
 }
+
+func (r *VehicleMap) CreateBatch(vehicles []internal.Vehicle) error {
+	for _, v := range vehicles {
+		if _, exists := r.db[v.Id]; exists {
+			return fmt.Errorf("vehicle with ID: %v already exists", v.Id)
+		}
+	}
+	for _, v := range vehicles {
+		r.db[v.Id] = v
+	}
+	return nil
+}

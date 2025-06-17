@@ -54,3 +54,8 @@ func (s *VehicleDefault) FindByTransmissionType(transmission string) ([]internal
 
 	return s.rp.FindByTransmissionType(transmission)
 }
+
+func (s *VehicleDefault) CreateBatch(vehicles []internal.Vehicle) error {
+
+	return s.rp.CreateBatch(vehicles)
+}

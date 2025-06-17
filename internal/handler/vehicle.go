@@ -329,3 +329,56 @@ func (h *VehicleDefault) GetByTransmissionType() http.HandlerFunc {
 		})
 	}
 }
+
+func (h *VehicleDefault) PostCreateBatch() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var req []VehicleJSON
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			response.JSON(w, http.StatusBadRequest, map[string]string{
+				"error": "invalid JSON",
+			})
+			return
+		}
+		var vehicles []internal.Vehicle
+		for _, item := range req {
+			vehicles = append(vehicles, internal.Vehicle{
+				Id: item.ID,
+				VehicleAttributes: internal.VehicleAttributes{
+					Brand:           item.Brand,
+					Model:           item.Model,
+					Registration:    item.Registration,
+					Color:           item.Color,
+					FabricationYear: item.FabricationYear,
+					Capacity:        item.Capacity,
+					MaxSpeed:        item.MaxSpeed,
+					FuelType:        item.FuelType,
+					Transmission:    item.Transmission,
+					Weight:          item.Weight,
+					Dimensions: internal.Dimensions{
+						Height: item.Height,
+						Length: item.Length,
+						Width:  item.Width,
+					},
+				},
+			})
+		}
+		err := h.sv.CreateBatch(vehicles)
+		if err != nil {
+			if strings.Contains(err.Error(), "already exists") {
+				response.JSON(w, http.StatusConflict, map[string]string{
+					"error": err.Error(),
+				})
+			} else {
+				response.JSON(w, http.StatusBadRequest, map[string]string{
+					"error": err.Error(),
+				})
+			}
+			return
+		}
+
+		response.JSON(w, http.StatusCreated, map[string]string{
+			"message": "vehicles created sucessfuly",
+		})
+	}
+
+}
