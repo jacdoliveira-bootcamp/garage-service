@@ -3,8 +3,7 @@ package application
 import (
 	"app/internal/handler"
 	"app/internal/loader"
-	"app/internal/repository"
-	"app/internal/service"
+	"app/internal/vehicle"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -58,9 +57,9 @@ func (a *ServerChi) Run() (err error) {
 		return
 	}
 	// - repository
-	rp := repository.NewVehicleMap(db)
+	rp := vehicle.NewVehicleMap(db)
 	// - service
-	sv := service.NewVehicleDefault(rp)
+	sv := vehicle.NewVehicleDefault(rp)
 	// - handler
 	hd := handler.NewVehicleDefault(sv)
 	// router

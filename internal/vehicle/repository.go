@@ -1,4 +1,4 @@
-package repository
+package vehicle
 
 import (
 	"app/internal"
