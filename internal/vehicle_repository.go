@@ -16,4 +16,5 @@ type VehicleRepository interface {
 	FindByBrandAverageCapacity(brand string) (int, error)
 	FindByDimensions(lengthMin, lengthMax, widthMin, widthMax float64) ([]Vehicle, error)
 	FindByWeight(min, max float64) ([]Vehicle, error)
+	FindByColor(color string) ([]Vehicle, error)
 }

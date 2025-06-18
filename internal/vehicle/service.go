@@ -87,3 +87,7 @@ func (s *VehicleDefault) FindByDimensions(lengthMin, lengthMax, widthMin, widthM
 func (s *VehicleDefault) FindByWeight(min, max float64) ([]internal.Vehicle, error) {
 	return s.rp.FindByWeight(min, max)
 }
+
+func (s *VehicleDefault) FindByColor(color string) ([]internal.Vehicle, error) {
+	return s.rp.FindByColor(color)
+}

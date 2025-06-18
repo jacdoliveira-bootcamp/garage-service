@@ -213,3 +213,18 @@ func (r *VehicleMap) FindByWeight(min, max float64) ([]internal.Vehicle, error) 
 	}
 	return result, nil
 }
+
+func (r *VehicleMap) FindByColor(color string) ([]internal.Vehicle, error) {
+	var result []internal.Vehicle
+
+	for _, v := range r.db {
+		if v.Color == color {
+			result = append(result, v)
+		}
+	}
+
+	if len(result) == 0 {
+		return nil, fmt.Errorf("no vehicles found")
+	}
+	return result, nil
+}
